@@ -8,10 +8,9 @@ const api = supertest(app);
 
 beforeEach(async () => {
   await Note.deleteMany({});
-  let noteObject = new Note(helper.initialNotes[0]);
-  await noteObject.save();
-  noteObject = new Note(helper.initialNotes[1]);
-  await noteObject.save();
+  const noteObjects = helper.initialNotes.map(note=> new Note(note))
+  const promiseArray = noteObjects.map(note=>note.save())
+  await Promise.all(promiseArray)
 });
 
 test("notes are returned as json", async () => {
@@ -79,7 +78,7 @@ test("a specific note can be viewed", async () => {
 
 test("a note can be deleted", async () => {
   const notesAtStart = await helper.notesInDb();
-  const noteToDelete  = notesAtStart[0];
+  const noteToDelete = notesAtStart[0];
   await api.delete(`/api/notes/${noteToDelete.id}`).expect(204);
 
   const notesAtEnd = await helper.notesInDb();
