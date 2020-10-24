@@ -6,10 +6,12 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "dev:test": "cross-env NODE_ENV=test nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "build:ui": "del build /s /f /q && cd ../fullstackopen/part2/note && npm run build --prod && xcopy \"build\" \"../../../note-server/build\" /s /y /i",
     "deploy": "git push heroku master",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
+    "start:test": "cross-env NODE_ENV=test node index.js",
     "logs:prod": "heroku logs --tail"
   },
   "author": "",
